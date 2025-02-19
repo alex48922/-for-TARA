@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Aquarelle&display=swap');
+
+        body {
+            background: url('bckground-lastpage.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            font-family: 'Aquarelle', cursive;
+            color: white;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            font-size: 1.2rem;
+            width: 80%;
+            max-width: 300px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            background-color: pink;
+            color: black;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: lightgray;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.8;
+            animation: flyUp 5s linear infinite;
+        }
+
+        @keyframes flyUp {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            25% {
+                transform: translateY(75vh) translateX(30px);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(50vh) translateX(-30px);
+            }
+            75% {
+                transform: translateY(25vh) translateX(30px);
+            }
+            100% {
+                transform: translateY(0) translateX(-30px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Will you be my forever?</h1>
+    <input type="text" id="responseBox" placeholder="Type your answer..." required>
+    <button onclick="sendEmail(); createEmojis();">Submit</button>
+
+    <script>
+        (function(){
+            emailjs.init("9eKYO527Wb0dEtwZM"); // User ID from EmailJS
+        })();
+
+        function sendEmail() {
+            let responseText = document.getElementById("responseBox").value;
+            if (!responseText.trim()) {
+                alert("Please enter a response!");
+                return;
+            }
+
+            let emailParams = {
+                message: responseText
+            };
+
+            emailjs.send("service_ygv2813", "template_6h5kcpu", emailParams)
+                .then(function(response) {
+                    alert("Response sent successfully!");
+                }, function(error) {
+                    alert("Failed to send response. Try again!");
+                });
+        }
+
+        function createEmojis() {
+            for (let i = 0; i < 20; i++) {
+                let emoji = document.createElement("div");
+                emoji.innerHTML = "❤️";
+                emoji.classList.add("emoji");
+                document.body.appendChild(emoji);
+                
+                let startX = Math.random() * window.innerWidth;
+                let duration = Math.random() * 3 + 3; // Random duration between 3s and 6s
+                
+                emoji.style.left = `${startX}px`;
+                emoji.style.animationDuration = `${duration}s`;
+                
+                setTimeout(() => {
+                    emoji.remove();
+                }, duration * 1000);
+            }
+        }
+    </script>
+</body>
+</html>
